@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>common. | A Digital Curator</title>
+  <meta name="description" content="common. — Web Production, LP Design, Logo Design, Photography. A Digital Curator." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@200;300;400;500&family=Noto+Sans+JP:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+</head>
+<body>
+
+  <!-- ===== LOADER ===== -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <span class="loader-text">common.</span>
+      <div class="loader-line"></div>
+    </div>
+  </div>
+
+  <!-- ===== EDITOR TOOLBAR (hidden by default) ===== -->
+  <div class="editor-toolbar" id="editorToolbar">
+    <div class="toolbar-left">
+      <button class="tb-btn tb-toggle active" id="tbToggleEdit" title="Edit Mode">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.5 1.5l3 3L5 14H2v-3L11.5 1.5z" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span>EDIT</span>
+      </button>
+      <span class="tb-sep"></span>
+      <button class="tb-btn" id="tbAddText" title="Add Text Layer">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3h10M8 3v10" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span>TEXT</span>
+      </button>
+      <button class="tb-btn" id="tbAddImage" title="Add Image Layer">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/><circle cx="5.5" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1"/><path d="M2 11l3-3 2 2 3-3 4 4" stroke="currentColor" stroke-width="1"/></svg>
+        <span>IMAGE</span>
+      </button>
+    </div>
+    <div class="toolbar-right">
+      <button class="tb-btn tb-save" id="tbSave" title="Save as Master">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 14H3a1 1 0 01-1-1V3a1 1 0 011-1h8l3 3v9a1 1 0 01-1 1z" stroke="currentColor" stroke-width="1.2"/><path d="M5 2v4h5V2M5 14v-4h6v4" stroke="currentColor" stroke-width="1"/></svg>
+        <span>SAVE</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== LAYER PROPERTY PANEL ===== -->
+  <div class="prop-panel" id="propPanel">
+    <div class="prop-header">
+      <span class="prop-title" id="propTitle">Properties</span>
+      <button class="prop-close" id="propClose">&times;</button>
+    </div>
+    <div class="prop-body" id="propBody">
+      <!-- dynamically populated -->
+    </div>
+  </div>
+
+  <!-- ===== IMAGE UPLOAD (hidden input) ===== -->
+  <input type="file" id="imageUpload" accept="image/*" style="display:none" />
+
+  <!-- ===== TOP NAV BAR ===== -->
+  <header class="topnav" id="topnav">
+    <div class="topnav-inner">
+      <a href="#hero" class="topnav-brand" data-layer="text" data-id="nav-brand">common.</a>
+      <nav class="topnav-links" id="desktopNav">
+        <a href="#about" data-layer="text" data-id="nav-about">About</a>
+        <a href="#service" data-layer="text" data-id="nav-services">Services</a>
+        <a href="#projects" data-layer="text" data-id="nav-works">Works</a>
+        <a href="#contact" data-layer="text" data-id="nav-contact">Contact</a>
+      </nav>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="メニュー">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== MOBILE OVERLAY ===== -->
+  <div class="mobile-overlay" id="mobileOverlay">
+    <nav class="mobile-nav">
+      <a href="#hero">Top</a>
+      <a href="#about">About</a>
+      <a href="#service">Services</a>
+      <a href="#projects">Works</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero" id="hero">
+    <canvas id="heroCanvas" class="hero-canvas"></canvas>
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-label reveal" data-delay="0.2" data-layer="text" data-id="hero-label">A DIGITAL CURATOR</p>
+      <h1 class="hero-title reveal" data-delay="0.4" data-layer="text" data-id="hero-title">common.</h1>
+      <div class="hero-desc-wrap reveal" data-delay="0.6">
+        <p class="hero-desc" data-layer="text" data-id="hero-desc">
+          喧騒に満ちた現代において、私たちは囁きを選びます。<br/>
+          デザインシステムのすべての要素は、緻密な計算のもとに配置されています。
+        </p>
+      </div>
+      <div class="hero-cta reveal" data-delay="0.8">
+        <a href="#projects" class="btn-minimal" data-layer="text" data-id="hero-cta">EXPLORE WORKS</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== INTRO TEXT ==================== -->
+  <section class="intro-section" id="about">
+    <div class="intro-grid">
+      <div class="intro-left">
+        <h2 class="intro-heading reveal-left" data-layer="text" data-id="intro-heading">
+          Intentional<br/>silence.
+        </h2>
+      </div>
+      <div class="intro-right">
+        <div class="intro-body reveal-right" data-delay="0.15">
+          <p data-layer="text" data-id="intro-body">
+            喧騒に満ちた現代において、私たちは囁きを選びます。
+            デザインシステムのすべての要素は、陽の光が降り注ぐ
+            ギャラリーに展示された作品のように、緻密な計算のもとに配置されています。
+          </p>
+        </div>
+        <div class="intro-divider reveal" data-delay="0.3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MARQUEE ==================== -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span>Web Production</span><span class="marquee-dot">·</span>
+      <span>LP Production</span><span class="marquee-dot">·</span>
+      <span>Logo Design</span><span class="marquee-dot">·</span>
+      <span>Photography</span><span class="marquee-dot">·</span>
+      <span>Branding</span><span class="marquee-dot">·</span>
+      <span>Digital Curation</span><span class="marquee-dot">·</span>
+      <span>Web Production</span><span class="marquee-dot">·</span>
+      <span>LP Production</span><span class="marquee-dot">·</span>
+      <span>Logo Design</span><span class="marquee-dot">·</span>
+      <span>Photography</span><span class="marquee-dot">·</span>
+      <span>Branding</span><span class="marquee-dot">·</span>
+      <span>Digital Curation</span><span class="marquee-dot">·</span>
+    </div>
+  </div>
+
+  <!-- ==================== SERVICES ==================== -->
+  <section class="services-section" id="service">
+    <div class="services-inner">
+      <div class="services-header">
+        <h2 class="section-title reveal" data-layer="text" data-id="services-title"><em>Our Services</em></h2>
+        <div class="section-divider reveal" data-delay="0.1"></div>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal" data-delay="0">
+          <div class="sc-icon svg-draw">
+            <svg width="57" height="57" viewBox="0 0 57 57" fill="none"><path d="M28.5 2L55 28.5L28.5 55L2 28.5L28.5 2Z" stroke="currentColor" stroke-width="0.8"/><circle cx="28.5" cy="28.5" r="12" stroke="currentColor" stroke-width="0.8"/></svg>
+          </div>
+          <h3 class="sc-title" data-layer="text" data-id="svc1-title"><em>Web Production</em></h3>
+          <p class="sc-desc" data-layer="text" data-id="svc1-desc">明瞭さと流れを優先し、没入感のあるデジタル体験を制作します。</p>
+        </div>
+        <div class="service-card reveal" data-delay="0.1">
+          <div class="sc-icon svg-draw">
+            <svg width="57" height="57" viewBox="0 0 57 57" fill="none"><rect x="2" y="2" width="53" height="53" stroke="currentColor" stroke-width="0.8"/><line x1="28.5" y1="2" x2="28.5" y2="55" stroke="currentColor" stroke-width="0.8"/><line x1="2" y1="28.5" x2="55" y2="28.5" stroke="currentColor" stroke-width="0.8"/></svg>
+          </div>
+          <h3 class="sc-title" data-layer="text" data-id="svc2-title"><em>LP Production</em></h3>
+          <p class="sc-desc" data-layer="text" data-id="svc2-desc">ミニマルな美学に基づいた、確度の高いストーリーテリングを提供します。</p>
+        </div>
+        <div class="service-card reveal" data-delay="0.2">
+          <div class="sc-icon svg-draw">
+            <svg width="58" height="55" viewBox="0 0 58 55" fill="none"><path d="M29 2L56 53H2L29 2Z" stroke="currentColor" stroke-width="0.8" fill="none"/><path d="M29 18L44 47H14L29 18Z" stroke="currentColor" stroke-width="0.8" fill="none"/></svg>
+          </div>
+          <h3 class="sc-title" data-layer="text" data-id="svc3-title"><em>Logo Design</em></h3>
+          <p class="sc-desc" data-layer="text" data-id="svc3-desc">本質を抽出し、普遍的で力強い視覚的アイデンティティを構築します。</p>
+        </div>
+        <div class="service-card reveal" data-delay="0.3">
+          <div class="sc-icon svg-draw">
+            <svg width="57" height="51" viewBox="0 0 57 51" fill="none"><circle cx="28.5" cy="25.5" r="24" stroke="currentColor" stroke-width="0.8"/><ellipse cx="28.5" cy="25.5" rx="12" ry="24" stroke="currentColor" stroke-width="0.8"/><line x1="4.5" y1="25.5" x2="52.5" y2="25.5" stroke="currentColor" stroke-width="0.8"/></svg>
+          </div>
+          <h3 class="sc-title" data-layer="text" data-id="svc4-title"><em>Photography</em></h3>
+          <p class="sc-desc" data-layer="text" data-id="svc4-desc">光と影を操り、静寂の中に潜む空気感を切り取ります。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STATS ==================== -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item reveal" data-delay="0">
+        <span class="stat-num" data-count="120">0</span>
+        <span class="stat-label">PROJECTS COMPLETED</span>
+      </div>
+      <div class="stat-item reveal" data-delay="0.08">
+        <span class="stat-num" data-count="47">0</span>
+        <span class="stat-label">HAPPY CLIENTS</span>
+      </div>
+      <div class="stat-item reveal" data-delay="0.16">
+        <span class="stat-num" data-count="8">0</span>
+        <span class="stat-label">YEARS EXPERIENCE</span>
+      </div>
+      <div class="stat-item reveal" data-delay="0.24">
+        <span class="stat-num" data-count="4">0</span>
+        <span class="stat-label">CORE SERVICES</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== QUOTE ==================== -->
+  <section class="quote-section">
+    <div class="quote-inner">
+      <div class="quote-dot reveal-scale"></div>
+      <blockquote class="quote-text reveal" data-delay="0.15" data-layer="text" data-id="quote-text">
+        "デザインとは、何を付け加えるかではなく、<br/>何を取り除くかにある。"
+      </blockquote>
+      <div class="quote-attribution reveal" data-delay="0.3">
+        <span class="quote-line"></span>
+        <span class="quote-author" data-layer="text" data-id="quote-author">THE CURATOR'S NOTE</span>
+        <span class="quote-line"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== WORKS ==================== -->
+  <section class="works-section" id="projects">
+    <div class="works-inner">
+      <div class="works-header">
+        <h2 class="section-title reveal" data-layer="text" data-id="works-title"><em>Works</em></h2>
+        <div class="section-divider reveal" data-delay="0.1"></div>
+      </div>
+      <div class="works-grid">
+        <div class="work-card reveal" data-delay="0">
+          <div class="work-img-wrap img-reveal">
+            <img src="img_49a34f3e.png" alt="Work 1" loading="lazy" data-layer="image" data-id="work1-img" />
+          </div>
+          <div class="work-meta">
+            <span class="work-num" data-layer="text" data-id="work1-num">01 / CONCEPT</span>
+            <h3 class="work-title" data-layer="text" data-id="work1-title"><em>Architecture of Light</em></h3>
+          </div>
+        </div>
+        <div class="work-card work-card--offset reveal" data-delay="0.12">
+          <div class="work-img-wrap img-reveal">
+            <img src="img_a427146c.png" alt="Work 2" loading="lazy" data-layer="image" data-id="work2-img" />
+          </div>
+          <div class="work-meta">
+            <span class="work-num" data-layer="text" data-id="work2-num">02 / TEXTURE</span>
+            <h3 class="work-title" data-layer="text" data-id="work2-title"><em>Tactile Resonance</em></h3>
+          </div>
+        </div>
+        <div class="work-card reveal" data-delay="0.24">
+          <div class="work-img-wrap img-reveal">
+            <img src="img_4c282d2b.png" alt="Work 3" loading="lazy" data-layer="image" data-id="work3-img" />
+          </div>
+          <div class="work-meta">
+            <span class="work-num" data-layer="text" data-id="work3-num">03 / ATMOSPHERE</span>
+            <h3 class="work-title" data-layer="text" data-id="work3-title"><em>Ivory Silhouettes</em></h3>
+          </div>
+        </div>
+        <div class="work-card work-card--offset reveal" data-delay="0.36">
+          <div class="work-img-wrap img-reveal">
+            <img src="img_025d98b4.png" alt="Work 4" loading="lazy" data-layer="image" data-id="work4-img" />
+          </div>
+          <div class="work-meta">
+            <span class="work-num" data-layer="text" data-id="work4-num">04 / VOID</span>
+            <h3 class="work-title" data-layer="text" data-id="work4-title"><em>The Empty Space</em></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT ==================== -->
+  <section class="contact-section" id="contact">
+    <div class="contact-inner">
+      <div class="contact-form-box">
+        <div class="contact-header">
+          <h2 class="contact-title reveal-scale" data-layer="text" data-id="contact-title"><em>Inquire for collaboration.</em></h2>
+          <p class="contact-sub reveal" data-delay="0.15" data-layer="text" data-id="contact-sub">プロジェクトの相談や依頼はこちらからお気軽にご連絡ください。</p>
+        </div>
+        <form class="contact-form reveal" id="contactForm" novalidate data-delay="0.2">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cName">NAME / お名前</label>
+              <input type="text" id="cName" placeholder="Your Name" required />
+            </div>
+            <div class="form-group">
+              <label for="cEmail">EMAIL / メールアドレス</label>
+              <input type="email" id="cEmail" placeholder="example@common.jp" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>SERVICE / ご依頼内容</label>
+            <div class="checkbox-row">
+              <label class="checkbox-label"><input type="checkbox" name="service" value="Web制作" /><span>Web制作</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="service" value="写真依頼" /><span>写真依頼</span></label>
+              <label class="checkbox-label"><input type="checkbox" name="service" value="未定・相談" /><span>未定・相談</span></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cMsg">MESSAGE / メッセージ</label>
+            <textarea id="cMsg" rows="4" placeholder="Project details..." required></textarea>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn-minimal btn-submit" id="submitBtn">SEND INQUIRY</button>
+          </div>
+        </form>
+        <div class="contact-bottom-line"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <a href="#hero" class="footer-brand" data-layer="text" data-id="footer-brand">common.</a>
+        <p class="footer-copy" data-layer="text" data-id="footer-copy">© 2024 common. All rights reserved.</p>
+      </div>
+      <nav class="footer-links">
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

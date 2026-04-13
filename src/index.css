@@ -1,0 +1,282 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+
+  --color-calm-base: #B4B4AC;
+  --color-calm-accent-brass: #B59A6D;
+  --color-calm-accent-oak: #8B7355;
+  --color-calm-text: #2C2C2C;
+  --color-calm-bg: #F5F5F3;
+  --color-calm-cream: #EDE8E0;
+
+  --shadow-calm: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  --shadow-calm-hover: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+  --shadow-calm-elevated: 0 30px 60px -20px rgba(0, 0, 0, 0.2);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-calm-bg text-calm-text font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif tracking-tight;
+  }
+
+  ::selection {
+    background: #B59A6D;
+    color: white;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* ===== Custom Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #B4B4AC;
+  border-radius: 10px;
+}
+
+/* ===== Scroll Progress Bar ===== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #B59A6D, #8B7355);
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* ===== Ken Burns Effect ===== */
+@keyframes kenBurns {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.15);
+  }
+}
+
+.ken-burns {
+  animation: kenBurns 10s ease-out forwards;
+}
+
+/* ===== Grain overlay ===== */
+@keyframes grainShift {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+.grain-overlay::after {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9998;
+  animation: grainShift 8s steps(10) infinite;
+  opacity: 0.4;
+}
+
+/* ===== Floating particles ===== */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(181, 154, 109, 0.4);
+  border-radius: 50%;
+  animation: float linear infinite;
+}
+
+/* ===== Line reveal animation ===== */
+@keyframes lineReveal {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.line-reveal {
+  transform-origin: left;
+  animation: lineReveal 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+/* ===== Image reveal clip ===== */
+@keyframes clipReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.clip-reveal {
+  animation: clipReveal 1.4s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+/* ===== Magnetic hover effect ===== */
+.magnetic-hover {
+  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* ===== Section divider ===== */
+.section-divider {
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, #B59A6D, transparent);
+  margin: 0 auto;
+}
+
+/* ===== Horizontal rule animation ===== */
+@keyframes hrGrow {
+  from { width: 0; }
+  to { width: 96px; }
+}
+
+/* ===== Menu card 3D tilt ===== */
+.card-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.card-3d-inner {
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.6s ease;
+}
+
+/* ===== Stagger children animation ===== */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stagger-children.visible > *:nth-child(1) { animation: staggerIn 0.6s 0.1s forwards; }
+.stagger-children.visible > *:nth-child(2) { animation: staggerIn 0.6s 0.2s forwards; }
+.stagger-children.visible > *:nth-child(3) { animation: staggerIn 0.6s 0.3s forwards; }
+.stagger-children.visible > *:nth-child(4) { animation: staggerIn 0.6s 0.4s forwards; }
+.stagger-children.visible > *:nth-child(5) { animation: staggerIn 0.6s 0.5s forwards; }
+.stagger-children.visible > *:nth-child(6) { animation: staggerIn 0.6s 0.6s forwards; }
+
+@keyframes staggerIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Image reveal mask ===== */
+.image-mask {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-mask::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #B59A6D;
+  transform: translateY(100%);
+  z-index: 2;
+}
+
+.image-mask.reveal::after {
+  animation: maskReveal 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+@keyframes maskReveal {
+  0% { transform: translateY(100%); }
+  45% { transform: translateY(0); }
+  55% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+/* ===== Smooth Reveal ===== */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-up {
+  opacity: 0;
+  animation: revealUp 1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+}
+
+/* ===== Interactive Button Glow ===== */
+.btn-calm {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-calm::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.btn-calm:hover::before {
+  left: 100%;
+}
