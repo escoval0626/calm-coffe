@@ -92,29 +92,33 @@ export default function Hero() {
 
   return (
     <section ref={ref} className="relative h-screen w-full overflow-hidden">
-      {/* Background Images with Crossfade */}
-      <AnimatePresence initial={false}>
-        <motion.div
-          key={index}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ 
-            duration: isNoAnimation ? 0 : 2.5, 
-            ease: [0.4, 0, 0.2, 1] 
-          }}
-          className="absolute inset-0"
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center ken-burns"
-            style={{ backgroundImage: `url(${images[index]})` }}
-          />
+      {/* Background Images - Static mode for Figma, Animated for users */}
+      {isNoAnimation ? (
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${images[0]})`, opacity: 1 }}
+        />
+      ) : (
+        <AnimatePresence initial={false}>
           <motion.div
-            className="absolute inset-0 bg-black"
-            style={{ opacity: isNoAnimation ? 0 : overlayOpacity }}
-          />
-        </motion.div>
-      </AnimatePresence>
+            key={index}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2.5, ease: [0.4, 0, 0.2, 1] }}
+            className="absolute inset-0"
+          >
+            <div
+              className="absolute inset-0 bg-cover bg-center ken-burns"
+              style={{ backgroundImage: `url(${images[index]})` }}
+            />
+            <motion.div
+              className="absolute inset-0 bg-black"
+              style={{ opacity: overlayOpacity }}
+            />
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       <FloatingParticles />
 
