@@ -449,6 +449,47 @@ export default function App() {
       {/* Spacing replaced Marquee */}
       <div className="py-20" />
 
+      {/* ===== News Section ===== */}
+      <section id="news" className="py-24 px-8 md:px-24 lg:px-32 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <SectionHeading label="Latest News" title="Moments at Calm" />
+          <motion.a
+            href="#"
+            whileHover={{ x: 5 }}
+            className="text-[10px] uppercase tracking-[0.3em] text-calm-accent-brass border-b border-calm-accent-brass/30 pb-2 mb-10"
+          >
+            View all updates
+          </motion.a>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          {[
+            { date: "2026.05.20", title: "雨の日のための、新しいブレンド。", category: "Journal" },
+            { date: "2026.05.15", title: "夜の営業時間を、少しだけ延ばします。", category: "Info" },
+            { date: "2026.05.10", title: "【季節限定】初夏のレモンタルトが登場。", category: "Seasonal" },
+          ].map((post, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.8 }}
+              className="group cursor-pointer"
+            >
+              <div className="text-[10px] text-calm-accent-brass tracking-[0.2em] mb-4 flex items-center gap-4">
+                <span>{post.date}</span>
+                <span className="w-8 h-[1px] bg-calm-accent-brass/20" />
+                <span className="text-calm-text/40">{post.category}</span>
+              </div>
+              <h3 className="text-lg mb-4 group-hover:text-calm-accent-brass transition-colors duration-500 leading-relaxed">
+                {post.title}
+              </h3>
+              <div className="w-0 h-[1px] bg-calm-accent-brass group-hover:w-full transition-all duration-700" />
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* ===== Concept Section ===== */}
       <section id="concept" className="py-32 md:py-40 px-8 md:px-24 lg:px-32 max-w-7xl mx-auto overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
