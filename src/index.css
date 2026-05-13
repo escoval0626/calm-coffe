@@ -264,6 +264,7 @@ body.no-animations *::after {
   opacity: 1 !important;
   transform: none !important;
   clip-path: none !important;
+  filter: none !important;
 }
 
 .reveal-up {

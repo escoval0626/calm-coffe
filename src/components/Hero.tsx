@@ -88,6 +88,8 @@ export default function Hero() {
     return () => clearInterval(timer);
   }, []);
 
+  const isNoAnimation = typeof document !== "undefined" && document.body.classList.contains("no-animations");
+
   return (
     <section ref={ref} className="relative h-screen w-full overflow-hidden">
       {/* Background Images with Crossfade */}
@@ -97,7 +99,10 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 2.5, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ 
+            duration: isNoAnimation ? 0 : 2.5, 
+            ease: [0.4, 0, 0.2, 1] 
+          }}
           className="absolute inset-0"
         >
           <div
