@@ -246,13 +246,24 @@
 /* ===== Smooth Reveal ===== */
 @keyframes revealUp {
   from {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 0;
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Design Sync Mode: Disables all animations for Figma import */
+body.no-animations *,
+body.no-animations *::before,
+body.no-animations *::after {
+  animation: none !important;
+  transition: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
 }
 
 .reveal-up {

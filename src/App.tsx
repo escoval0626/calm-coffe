@@ -283,6 +283,14 @@ export default function App() {
     // Force scroll to top on refresh
     window.scrollTo(0, 0);
 
+    // Detect ?no-animation in URL for Figma sync
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("no-animation")) {
+      document.body.classList.add("no-animations");
+    } else {
+      document.body.classList.remove("no-animations");
+    }
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
