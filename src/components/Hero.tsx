@@ -111,7 +111,7 @@ export default function Hero() {
           />
           <motion.div
             className="absolute inset-0 bg-black"
-            style={{ opacity: overlayOpacity }}
+            style={{ opacity: isNoAnimation ? 0 : overlayOpacity }}
           />
         </motion.div>
       </AnimatePresence>
